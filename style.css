@@ -1,0 +1,198 @@
+/* ── RESET & BASE ─────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0e1a;--card:#111827;--border:#1f2937;
+  --green:#10b981;--red:#ef4444;--yellow:#f59e0b;
+  --blue:#3b82f6;--orange:#f97316;--purple:#8b5cf6;
+  --text:#f9fafb;--muted:#9ca3af;--dim:#6b7280;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;font-size:13px;min-height:100vh;overflow-x:hidden}
+button{cursor:pointer;font-family:inherit}
+input{font-family:inherit}
+
+/* ── INSTALL BANNER ───────────────────────────── */
+.install-banner{display:flex;align-items:center;gap:8px;background:#1a1200;border-bottom:1px solid var(--yellow);padding:8px 12px;font-size:11px;color:var(--yellow)}
+.install-banner button{background:var(--yellow);color:#000;border:none;border-radius:4px;padding:4px 10px;font-size:10px;font-weight:700}
+.install-banner #dismissBanner{background:transparent;color:var(--muted);font-size:14px;padding:2px 6px}
+
+/* ── HEADER ───────────────────────────────────── */
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#0d1220;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.header-left{display:flex;align-items:center;gap:10px}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,#f7931a,#ffb347);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#000}
+.app-title{font-size:14px;font-weight:700;letter-spacing:1px;color:var(--text)}
+.app-sub{font-size:9px;color:var(--muted);letter-spacing:0.5px}
+.header-right{display:flex;align-items:center;gap:6px}
+.status-dot{width:10px;height:10px;border-radius:50%}
+.status-dot.green{background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+.status-dot.red{background:var(--red)}
+.status-label{font-size:10px;font-weight:700;color:var(--green)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* ── NAV TABS ─────────────────────────────────── */
+.nav-tabs{display:flex;background:#0d1220;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:70px;padding:10px 4px;background:transparent;border:none;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:0.5px;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
+.tab.active{color:var(--yellow);border-bottom-color:var(--yellow)}
+
+/* ── TAB CONTENT ──────────────────────────────── */
+.tab-content{display:none;padding:12px;padding-bottom:80px}
+.tab-content.active{display:block}
+
+/* ── CARDS ────────────────────────────────────── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
+.card-title{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-bottom:12px}
+
+/* ── BALANCE CARD ─────────────────────────────── */
+.balance-card{background:linear-gradient(135deg,#111827,#1a2035)}
+.balance-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.label{font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:4px}
+.balance-value{font-size:28px;font-weight:700;color:var(--text)}
+.pnl-value{font-size:22px;font-weight:700}
+.pnl-value.positive{color:var(--green)}
+.pnl-value.negative{color:var(--red)}
+.pnl-value.neutral{color:var(--muted)}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--border)}
+.stat{text-align:center}
+.stat-label{font-size:8px;color:var(--muted);margin-bottom:3px;letter-spacing:0.5px}
+.stat-val{font-size:16px;font-weight:700;color:var(--text)}
+
+/* ── COUNTDOWN ────────────────────────────────── */
+.countdown-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.countdown-val{font-size:32px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+.price-val{font-size:20px;font-weight:700;color:var(--text)}
+.progress-bar{background:var(--border);border-radius:4px;height:6px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));transition:width 1s linear;border-radius:4px}
+.scan-row{display:flex;justify-content:space-between;margin-top:8px}
+.muted{color:var(--muted);font-size:10px}
+.scan-status{font-size:10px;font-weight:700}
+.scan-status.scanning{color:var(--yellow)}
+.scan-status.live{color:var(--green)}
+.scan-status.error{color:var(--red)}
+
+/* ── INDICATORS ───────────────────────────────── */
+.indicators-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.ind-item{background:var(--bg);border-radius:8px;padding:10px 6px;text-align:center;border:1px solid var(--border)}
+.ind-label{font-size:8px;color:var(--muted);margin-bottom:4px;letter-spacing:0.5px}
+.ind-val{font-size:14px;font-weight:700;margin-bottom:2px}
+.ind-status{font-size:8px;color:var(--muted)}
+
+/* ── SCORE BARS ───────────────────────────────── */
+.score-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.score-row span:first-child{width:32px;font-size:11px;font-weight:700}
+.score-bar{flex:1;background:var(--border);border-radius:4px;height:10px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 0.5s ease}
+.green-bar{background:linear-gradient(90deg,#052e16,var(--green))}
+.red-bar{background:linear-gradient(90deg,#2a0a0a,var(--red))}
+.score-num{width:32px;text-align:right;font-size:11px;font-weight:700}
+
+/* ── CIRCUIT BREAKER ──────────────────────────── */
+.cb-row{display:flex;align-items:center;justify-content:space-between}
+.cb-lights{display:flex;gap:8px}
+.cb-dot{width:24px;height:24px;border-radius:50%;transition:all 0.3s}
+.cb-dot.gray{background:#374151}
+.cb-dot.yellow{background:var(--yellow);box-shadow:0 0 8px var(--yellow)}
+.cb-dot.red{background:var(--red);box-shadow:0 0 10px var(--red);animation:pulse 1s infinite}
+.cb-label{font-size:12px;font-weight:700;color:var(--muted)}
+.cb-warning{margin-top:10px;padding:8px 10px;background:#2a0a0a;border-radius:6px;color:var(--red);font-size:11px;border:1px solid var(--red)}
+
+/* ── SIGNAL ───────────────────────────────────── */
+.signal-card{text-align:center;padding:24px;border-width:2px}
+.neutral-signal{border-color:var(--border)}
+.buy-signal{border-color:var(--green);background:#052e16}
+.sell-signal{border-color:var(--red);background:#2a0a0a}
+.signal-icon{font-size:48px;margin-bottom:10px}
+.signal-text{font-size:22px;font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.signal-sub{font-size:11px;color:var(--muted)}
+.green-signal-text{color:var(--green)}
+.red-signal-text{color:var(--red)}
+
+/* ── TRADE LEVELS ─────────────────────────────── */
+.level-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg);border-radius:6px;margin-bottom:6px}
+.level-label{font-size:10px;color:var(--muted);letter-spacing:0.5px}
+.level-val{font-size:13px;font-weight:700}
+.white{color:var(--text)}
+.green-text{color:var(--green)}
+.red-text{color:var(--red)}
+.yellow-text{color:var(--yellow)}
+.blue-text{color:var(--blue)}
+
+/* ── LIVE PnL ─────────────────────────────────── */
+.live-pnl-box{display:flex;justify-content:space-between;align-items:center;padding:12px 10px;border-radius:8px;margin:8px 0;border:1px solid var(--border)}
+.live-pnl-val{font-size:20px;font-weight:700}
+.btn-exit{width:100%;padding:12px;background:#2a0a0a;border:1px solid var(--red);color:var(--red);border-radius:8px;font-size:13px;font-weight:700;margin-top:8px}
+
+/* ── AI REASONING ─────────────────────────────── */
+.ai-reasoning{font-size:11px;color:var(--muted);line-height:1.8;background:var(--bg);padding:12px;border-radius:8px;border-left:3px solid var(--purple)}
+
+/* ── PERF GRID ────────────────────────────────── */
+.perf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.perf-item{background:var(--bg);border-radius:8px;padding:10px;text-align:center}
+.perf-label{font-size:9px;color:var(--muted);margin-bottom:4px;letter-spacing:0.5px}
+.perf-val{font-size:18px;font-weight:700}
+
+/* ── TRADE HISTORY ────────────────────────────── */
+.trade-history{max-height:300px;overflow-y:auto}
+.no-trades{font-size:11px;color:var(--dim);text-align:center;padding:20px}
+.trade-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.trade-row:last-child{border-bottom:none}
+.trade-left .trade-dir{font-size:12px;font-weight:700;margin-bottom:2px}
+.trade-left .trade-meta{font-size:9px;color:var(--muted)}
+.trade-right .trade-pnl{font-size:14px;font-weight:700;text-align:right}
+.trade-right .trade-reason{font-size:9px;color:var(--muted);text-align:right}
+
+/* ── LEARNING LOG ─────────────────────────────── */
+.learning-log{max-height:200px;overflow-y:auto}
+.log-item{font-size:10px;padding:4px 0;border-bottom:1px solid var(--border);line-height:1.6}
+.log-item.info{color:var(--muted)}
+.log-item.win{color:var(--green)}
+.log-item.loss{color:var(--red)}
+.log-item.warn{color:var(--yellow)}
+.log-item.learn{color:var(--purple)}
+
+/* ── SETTINGS ─────────────────────────────────── */
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.setting-row:last-child{border-bottom:none}
+.setting-row label{font-size:11px;color:var(--muted)}
+.setting-input{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:6px;width:80px;text-align:right;font-family:inherit;font-size:12px}
+.notif-status{font-size:11px;font-weight:700}
+
+/* ── TOGGLE ───────────────────────────────────── */
+.toggle{position:relative;display:inline-block;width:44px;height:24px}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:12px;transition:0.3s}
+.slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:0.3s}
+input:checked+.slider{background:var(--green)}
+input:checked+.slider:before{transform:translateX(20px)}
+
+/* ── MODE BUTTONS ─────────────────────────────── */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+.mode-btn{padding:10px 4px;background:var(--bg);border:1px solid var(--border);color:var(--muted);border-radius:8px;font-size:10px;font-weight:700;transition:all 0.2s}
+.mode-btn.active{border-color:var(--yellow);color:var(--yellow);background:#1a1200}
+
+/* ── ACTION BUTTONS ───────────────────────────── */
+.btn-green,.btn-red,.btn-yellow,.btn-orange,.btn-blue,.btn-notif,.btn-export{
+  display:block;width:100%;padding:13px;border:none;border-radius:10px;
+  font-size:13px;font-weight:700;margin-bottom:8px;letter-spacing:0.5px;
+}
+.btn-green{background:var(--green);color:#000}
+.btn-red{background:var(--red);color:#fff}
+.btn-yellow{background:var(--yellow);color:#000}
+.btn-orange{background:var(--orange);color:#000}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-notif{background:#1a0a2a;border:1px solid var(--purple);color:var(--purple)}
+.btn-export{background:var(--bg);border:1px solid var(--border);color:var(--muted)}
+
+/* ── INSTALL INFO ─────────────────────────────── */
+.install-info{font-size:11px;color:var(--muted);line-height:1.8;background:var(--bg);padding:12px;border-radius:8px;margin-bottom:12px}
+
+/* ── CIRCUIT OVERLAY ──────────────────────────── */
+.cb-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:999;display:flex;align-items:center;justify-content:center}
+.cb-modal{background:var(--card);border:2px solid var(--red);border-radius:16px;padding:32px 24px;text-align:center;max-width:320px;margin:0 16px}
+.cb-icon{font-size:56px;margin-bottom:12px}
+.cb-title{font-size:20px;font-weight:700;color:var(--red);margin-bottom:12px;letter-spacing:2px}
+.cb-msg{font-size:13px;color:var(--text);line-height:1.8;margin-bottom:8px}
+.cb-sub{font-size:11px;color:var(--muted);margin-bottom:20px}
+
+/* ── TOAST ────────────────────────────────────── */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 20px;font-size:12px;color:var(--text);z-index:9999;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.5);animation:fadeInUp 0.3s ease}
+@keyframes fadeInUp{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+.hidden{display:none!important}

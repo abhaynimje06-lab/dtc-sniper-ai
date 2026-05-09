@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#0a0e1a"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="DTC Sniper"/>
+<title>DTC Institutional BTC Sniper</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" href="assets/icon.png"/>
+<link rel="apple-touch-icon" href="assets/icon.png"/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- INSTALL BANNER -->
+<div id="installBanner" class="install-banner hidden">
+  <span>📲 Install as App for notifications</span>
+  <button id="installBtn">INSTALL</button>
+  <button id="dismissBanner">✕</button>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo">₿</div>
+    <div>
+      <div class="app-title">DTC BTC SNIPER</div>
+      <div class="app-sub">Institutional AI • Paper Trading</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div id="systemStatus" class="status-dot green"></div>
+    <div id="statusLabel" class="status-label">LIVE</div>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <button class="tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+  <button class="tab" onclick="switchTab('signal')">🎯 Signal</button>
+  <button class="tab" onclick="switchTab('journal')">📋 Journal</button>
+  <button class="tab" onclick="switchTab('settings')">⚙️ Settings</button>
+</nav>
+
+<!-- ══════════ DASHBOARD TAB ══════════ -->
+<div id="tab-dashboard" class="tab-content active">
+
+  <!-- Balance Card -->
+  <div class="card balance-card">
+    <div class="balance-row">
+      <div>
+        <div class="label">VIRTUAL BALANCE</div>
+        <div id="balance" class="balance-value">$10.00</div>
+      </div>
+      <div style="text-align:right">
+        <div class="label">TOTAL PnL</div>
+        <div id="totalPnl" class="pnl-value neutral">$0.00</div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-label">TRADES</div><div id="totalTrades" class="stat-val">0</div></div>
+      <div class="stat"><div class="stat-label">WIN RATE</div><div id="winRate" class="stat-val">0%</div></div>
+      <div class="stat"><div class="stat-label">WINS</div><div id="totalWins" class="stat-val green-text">0</div></div>
+      <div class="stat"><div class="stat-label">LOSSES</div><div id="totalLosses" class="stat-val red-text">0</div></div>
+    </div>
+  </div>
+
+  <!-- Countdown Card -->
+  <div class="card">
+    <div class="countdown-row">
+      <div>
+        <div class="label">NEXT 5m CANDLE CLOSE</div>
+        <div id="countdown" class="countdown-val">05:00</div>
+      </div>
+      <div style="text-align:right">
+        <div class="label">BTC PRICE</div>
+        <div id="livePrice" class="price-val">Loading...</div>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+    <div class="scan-row">
+      <span id="lastScan" class="muted">Last scan: —</span>
+      <span id="scanStatus" class="scan-status scanning">⟳ Connecting...</span>
+    </div>
+  </div>
+
+  <!-- AI Analysis Card -->
+  <div class="card">
+    <div class="card-title">🧠 AI ANALYSIS</div>
+    <div class="indicators-grid">
+      <div class="ind-item">
+        <div class="ind-label">RSI</div>
+        <div id="rsiVal" class="ind-val">—</div>
+        <div id="rsiStatus" class="ind-status">—</div>
+      </div>
+      <div class="ind-item">
+        <div class="ind-label">ADX</div>
+        <div id="adxVal" class="ind-val">—</div>
+        <div id="adxStatus" class="ind-status">—</div>
+      </div>
+      <div class="ind-item">
+        <div class="ind-label">MACD</div>
+        <div id="macdStatus" class="ind-val">—</div>
+        <div id="macdDetail" class="ind-status">—</div>
+      </div>
+      <div class="ind-item">
+        <div class="ind-label">VOLUME</div>
+        <div id="volStatus" class="ind-val">—</div>
+        <div id="volDetail" class="ind-status">—</div>
+      </div>
+      <div class="ind-item">
+        <div class="ind-label">EMA TREND</div>
+        <div id="emaStatus" class="ind-val">—</div>
+        <div id="emaDetail" class="ind-status">—</div>
+      </div>
+      <div class="ind-item">
+        <div class="ind-label">HTF BIAS</div>
+        <div id="htfStatus" class="ind-val">—</div>
+        <div id="htfDetail" class="ind-status">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score Bars -->
+  <div class="card">
+    <div class="card-title">📈 CONFLUENCE SCORES</div>
+    <div class="score-row">
+      <span class="green-text">BULL</span>
+      <div class="score-bar"><div id="bullBar" class="bar-fill green-bar" style="width:0%"></div></div>
+      <span id="bullScoreNum" class="score-num green-text">0/8</span>
+    </div>
+    <div class="score-row">
+      <span class="red-text">BEAR</span>
+      <div class="score-bar"><div id="bearBar" class="bar-fill red-bar" style="width:0%"></div></div>
+      <span id="bearScoreNum" class="score-num red-text">0/8</span>
+    </div>
+  </div>
+
+  <!-- Circuit Breaker Card -->
+  <div class="card" id="cbCard">
+    <div class="card-title">🛡️ CIRCUIT BREAKER</div>
+    <div class="cb-row">
+      <div id="cbLights" class="cb-lights">
+        <div class="cb-dot gray" id="cb0"></div>
+        <div class="cb-dot gray" id="cb1"></div>
+        <div class="cb-dot gray" id="cb2"></div>
+        <div class="cb-dot gray" id="cb3"></div>
+        <div class="cb-dot gray" id="cb4"></div>
+      </div>
+      <div id="cbLabel" class="cb-label">0/5 losses</div>
+    </div>
+    <div id="cbWarning" class="cb-warning hidden">
+      ⚠️ WARNING: <span id="cbCount">0</span> consecutive losses
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ SIGNAL TAB ══════════ -->
+<div id="tab-signal" class="tab-content">
+
+  <!-- Active Signal -->
+  <div id="signalBox" class="card signal-card neutral-signal">
+    <div id="signalIcon" class="signal-icon">⚪</div>
+    <div id="signalText" class="signal-text">SCANNING MARKET...</div>
+    <div id="signalSub" class="signal-sub">Waiting for 5m candle close</div>
+  </div>
+
+  <!-- Trade Levels -->
+  <div class="card" id="tradeLevels">
+    <div class="card-title">📍 TRADE LEVELS</div>
+    <div class="level-row">
+      <span class="level-label">ENTRY</span>
+      <span id="entryPrice" class="level-val white">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">STOP LOSS</span>
+      <span id="slPrice" class="level-val red-text">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">TARGET 1</span>
+      <span id="tp1Price" class="level-val green-text">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">TARGET 2</span>
+      <span id="tp2Price" class="level-val green-text">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">RISK:REWARD</span>
+      <span id="rrVal" class="level-val yellow-text">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">POSITION SIZE</span>
+      <span id="posSize" class="level-val white">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">CONFIDENCE</span>
+      <span id="confVal" class="level-val yellow-text">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">TRADE QUALITY</span>
+      <span id="qualityVal" class="level-val yellow-text">—</span>
+    </div>
+  </div>
+
+  <!-- Active Trade Monitor -->
+  <div id="activeTradeMon" class="card hidden">
+    <div class="card-title">📊 ACTIVE PAPER TRADE</div>
+    <div class="level-row">
+      <span class="level-label">DIRECTION</span>
+      <span id="monSignal" class="level-val">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">ENTRY</span>
+      <span id="monEntry" class="level-val white">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">CURRENT</span>
+      <span id="monCurrent" class="level-val white">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">SL</span>
+      <span id="monSL" class="level-val red-text">—</span>
+    </div>
+    <div class="level-row">
+      <span class="level-label">TP</span>
+      <span id="monTP" class="level-val green-text">—</span>
+    </div>
+    <div id="livePnlBox" class="live-pnl-box">
+      <span class="level-label">LIVE PnL</span>
+      <span id="livePnl" class="live-pnl-val">$0.00</span>
+    </div>
+    <button class="btn-exit" onclick="manualExit()">⛔ MANUAL EXIT</button>
+  </div>
+
+  <!-- AI Reasoning -->
+  <div class="card">
+    <div class="card-title">🤖 AI REASONING</div>
+    <div id="aiReasoning" class="ai-reasoning">
+      Waiting for market analysis...
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ JOURNAL TAB ══════════ -->
+<div id="tab-journal" class="tab-content">
+
+  <!-- Stats Summary -->
+  <div class="card">
+    <div class="card-title">📊 PERFORMANCE STATS</div>
+    <div class="perf-grid">
+      <div class="perf-item">
+        <div class="perf-label">PROFIT FACTOR</div>
+        <div id="profitFactor" class="perf-val yellow-text">—</div>
+      </div>
+      <div class="perf-item">
+        <div class="perf-label">AVG RR</div>
+        <div id="avgRR" class="perf-val yellow-text">—</div>
+      </div>
+      <div class="perf-item">
+        <div class="perf-label">MAX DRAWDOWN</div>
+        <div id="maxDD" class="perf-val red-text">—</div>
+      </div>
+      <div class="perf-item">
+        <div class="perf-label">BEST TRADE</div>
+        <div id="bestTrade" class="perf-val green-text">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trade History -->
+  <div class="card">
+    <div class="card-title">📋 TRADE HISTORY</div>
+    <div id="tradeHistory" class="trade-history">
+      <div class="no-trades">No trades yet. System scanning...</div>
+    </div>
+  </div>
+
+  <!-- AI Learning Log -->
+  <div class="card">
+    <div class="card-title">🧠 AI LEARNING LOG</div>
+    <div id="learningLog" class="learning-log">
+      <div class="log-item info">[System] AI engine initialized. Learning from market data...</div>
+    </div>
+  </div>
+
+  <button class="btn-export" onclick="exportJournal()">📤 EXPORT JOURNAL</button>
+
+</div>
+
+<!-- ══════════ SETTINGS TAB ══════════ -->
+<div id="tab-settings" class="tab-content">
+
+  <div class="card">
+    <div class="card-title">⚙️ BOT SETTINGS</div>
+
+    <div class="setting-row">
+      <label>Virtual Capital ($)</label>
+      <input type="number" id="setCapital" value="10" class="setting-input"/>
+    </div>
+    <div class="setting-row">
+      <label>Risk Per Trade (%)</label>
+      <input type="number" id="setRisk" value="1" step="0.1" class="setting-input"/>
+    </div>
+    <div class="setting-row">
+      <label>Max Leverage</label>
+      <input type="number" id="setLeverage" value="5" max="10" class="setting-input"/>
+    </div>
+    <div class="setting-row">
+      <label>Min Score (out of 8)</label>
+      <input type="number" id="setMinScore" value="6" min="1" max="8" class="setting-input"/>
+    </div>
+    <div class="setting-row">
+      <label>Circuit Breaker (losses)</label>
+      <input type="number" id="setMaxLosses" value="5" min="2" max="10" class="setting-input"/>
+    </div>
+    <div class="setting-row">
+      <label>ATR SL Multiplier</label>
+      <input type="number" id="setAtrMult" value="1.5" step="0.1" class="setting-input"/>
+    </div>
+    <div class="setting-row">
+      <label>Risk:Reward Ratio</label>
+      <input type="number" id="setRR" value="2.5" step="0.5" class="setting-input"/>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔔 NOTIFICATIONS</div>
+    <div class="setting-row">
+      <label>Push Notifications</label>
+      <div id="notifStatus" class="notif-status">Not enabled</div>
+    </div>
+    <button class="btn-notif" onclick="requestNotif()">🔔 ENABLE NOTIFICATIONS</button>
+    <div class="setting-row" style="margin-top:12px">
+      <label>Sound Alert</label>
+      <label class="toggle">
+        <input type="checkbox" id="soundToggle" checked/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🤖 AI MODE</div>
+    <div class="mode-grid">
+      <button id="modeSafe" class="mode-btn active" onclick="setMode('safe')">🛡️ SAFE</button>
+      <button id="modeNormal" class="mode-btn" onclick="setMode('normal')">⚖️ NORMAL</button>
+      <button id="modeAggr" class="mode-btn" onclick="setMode('aggressive')">⚡ AGGR</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔧 CONTROLS</div>
+    <button class="btn-green" onclick="startBot()">▶ START BOT</button>
+    <button class="btn-red" onclick="stopBot()">⏹ STOP BOT</button>
+    <button class="btn-yellow" onclick="resetBot()">🔄 RESET ALL</button>
+    <button class="btn-orange" onclick="resetCircuit()">🔓 RESET CIRCUIT BREAKER</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📲 INSTALL AS APP</div>
+    <div class="install-info">
+      To get native notifications, install this as an app:<br/><br/>
+      <b>Android Chrome:</b><br/>
+      Tap ⋮ menu → "Add to Home Screen" → Install<br/><br/>
+      <b>Android Firefox:</b><br/>
+      Tap ⋮ → "Install" or "Add to Home Screen"
+    </div>
+    <button id="installBtnSettings" class="btn-blue" onclick="installPWA()">📲 INSTALL APP</button>
+  </div>
+
+</div>
+
+<!-- CIRCUIT BREAKER OVERLAY -->
+<div id="cbOverlay" class="cb-overlay hidden">
+  <div class="cb-modal">
+    <div class="cb-icon">🚨</div>
+    <div class="cb-title">SYSTEM HALTED</div>
+    <div class="cb-msg">Circuit breaker activated.<br/><span id="cbLossCount">5</span> consecutive losses detected.<br/>Protecting your virtual capital.</div>
+    <div class="cb-sub">Review your trades before restarting.</div>
+    <button class="btn-red" onclick="resetCircuit()">🔓 RESET & RESTART</button>
+  </div>
+</div>
+
+<!-- NOTIFICATION TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/indicators.js"></script>
+<script src="js/bot.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/sw-register.js"></script>
+</body>
+</html>
